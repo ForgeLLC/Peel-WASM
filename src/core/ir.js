@@ -3,8 +3,16 @@
 // readModule'ün dispose() ile serbest bırakılması gerekir (withModule bunu yapar).
 import { readNames, writeNames } from './wasm-bin.js';
 
+// Tarayıcıda binaryen paketlenmez (Vite 14 MB'lık gömülü dizgeyi tarayamaz): vite.config.js onu aynı kökenden
+// vendor/binaryen.js olarak sunar. Node'da (CLI, testler) npm paketi kullanılır; belirteç değişkendir ki Vite
+// bu içe aktarmayı paketlemeye çalışmasın.
 let loading = null;
-export const loadBinaryen = () => (loading ??= import('binaryen').then((m) => m.default ?? m));
+const inBrowser = () => typeof document !== 'undefined' && typeof process === 'undefined';
+export const loadBinaryen = () => (loading ??= (async () => {
+  const spec = inBrowser() ? new URL('vendor/binaryen.js', document.baseURI).href : 'binaryen';
+  const m = await import(/* @vite-ignore */ spec);
+  return m.default ?? m;
+})());
 
 // Tarayıcı motorlarının desteklediği özellikler. Features.All kullanılmaz: binaryen o zaman deneysel kodlamalar
 // (ör. CompactImports: aynı modül adlı import'ları gruplayan yeni biçim) yazar ve çıktı WebAssembly.validate'ten geçmez.

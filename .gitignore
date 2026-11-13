@@ -27,3 +27,4 @@ tmp-*
 # kullanıcının gerçek örnekleri: yalnızca yerel testte
 test/samples/
 test/bench/vendor/
+.claude/

@@ -166,18 +166,21 @@ export function findEmbedded(bytes, from = 1) {
   return out;
 }
 
-/** Gömülü modülün uzunluğu: bölüm başlıkları geçerli olduğu sürece ilerlenir */
+// Bölümlerin zorunlu sırası (özel bölüm 0 her yerde olabilir): datacount (12) koddan (10) önce, tag (13) bellekten sonra gelir
+const ORDER = { 1: 1, 2: 2, 3: 3, 4: 4, 5: 5, 13: 6, 6: 7, 7: 8, 8: 9, 9: 10, 12: 11, 10: 12, 11: 13 };
+
+/** Gömülü modülün uzunluğu: bölüm başlıkları geçerli ve sıralı olduğu sürece ilerlenir */
 export function embeddedLength(bytes, at) {
   let pos = at + 8;
   let last = pos;
-  let prev = -1;
+  let prev = 0;
   while (pos < bytes.length) {
     const id = bytes[pos];
-    if (id > 12 || (id !== 0 && id <= prev)) break;
+    if (id !== 0 && (!ORDER[id] || ORDER[id] <= prev)) break;
     let size; let body;
     try { [size, body] = readU32(bytes, pos + 1); } catch { break; }
     if (body + size > bytes.length) break;
-    if (id) prev = id;
+    if (id) prev = ORDER[id];
     pos = body + size;
     last = pos;
   }

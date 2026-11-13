@@ -90,6 +90,13 @@ const cffWat = `(module
      (then (local.set $s (i32.const 1)) (br $d))
      (else (local.set $s (i32.const 3)) (br $d)))))
   (local.get $acc)))`;
+// arayüzün "Örnek" düğmesi aynı modülün WAT metnini kullanır (zararsız)
+writeFileSync(new URL('../src/sample.js', import.meta.url), `// Arayüz örneği: scripts/make-fixtures.js üretir (cff-calc fixture'ının WAT metni). Zararsızdır: başlangıçta bir
+// selamlama dizgesini çözer, iki fonksiyonu düzleştirilmiş, opak koşullu ve sabit kodlu hâlde taşır.
+export const SAMPLE = ${JSON.stringify(`;; PEEL örnek: düzleştirilmiş kontrol akışı + opak koşul + sabit kodlama + başlangıçta çözülen şifreli veri
+${cffWat}
+`)};
+`);
 save('cff-calc', compile(cffWat), {
   verified: true, stats: { cff: 2, opaque: 1, data: 1 },
   contains: ['Hello from Peel', '(loop'], gone: ['br_table', '$decrypt', '(start'],

@@ -37,6 +37,12 @@ assert.equal(two.layers.length, 2);
 assert.ok(same(two.bytes, big));
 assert.ok(extractModule('merhaba dünya', tools).error);
 
+// datacount (12) koddan (10) önce gelir: uzunluk kesilmemeli (regresyon)
+const withData = watToWasm(B, '(module (memory 1) (data (i32.const 0) "hi") (func (export "f")))');
+assert.equal(embeddedLength(Uint8Array.from([7, ...withData]), 1), withData.length);
+const dl = extractModule(`x("${Buffer.from(withData).toString('base64')}")`, tools);
+assert.ok(same(dl.bytes, withData));
+
 // gömülü modül arama ve uzunluk
 const blob = new Uint8Array([1, 2, 3, ...wasm, 9, 9]);
 assert.deepEqual(findEmbedded(blob), [3]);
