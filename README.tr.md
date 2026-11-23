@@ -62,7 +62,7 @@ Tek düğme her şeyi çalıştırır.
 Node.js 25 ya da daha yenisi gerekir (CLI sandbox'ı Node'un izin modelini kullanır).
 
 ```bash
-git clone https://github.com/LLCForge/Peel-WASM.git
+git clone https://github.com/ForgeLLC/Peel-WASM.git
 cd Peel-WASM
 npm install
 npm run dev

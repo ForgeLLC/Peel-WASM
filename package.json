@@ -12,9 +12,9 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/LLCForge/Peel-WASM.git"
+    "url": "git+https://github.com/ForgeLLC/Peel-WASM.git"
   },
-  "homepage": "https://github.com/LLCForge/Peel-WASM#readme",
+  "homepage": "https://github.com/ForgeLLC/Peel-WASM#readme",
   "keywords": [
     "deobfuscator",
     "webassembly",

@@ -62,7 +62,7 @@ Output: the cleaned module as `.wasm`, its WAT text, and a wasm-decompile style 
 You need Node.js 25 or newer (the CLI sandbox uses Node's permission model).
 
 ```bash
-git clone https://github.com/LLCForge/Peel-WASM.git
+git clone https://github.com/ForgeLLC/Peel-WASM.git
 cd Peel-WASM
 npm install
 npm run dev
